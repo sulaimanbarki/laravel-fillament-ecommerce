@@ -12,7 +12,6 @@ class Category extends Model
 
     protected $fillable = ['name', 'slug', 'description'];
 
-    // while creating a new category, we will generate a slug
     protected static function boot()
     {
         parent::boot();

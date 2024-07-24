@@ -33,6 +33,11 @@ class UserResource extends Resource
                     ->label('Email')
                     ->required()
                     ->placeholder('john@admin.com'),
+                // email_verified_at field
+                Forms\Components\DateTimePicker::make('email_verified_at')
+                    ->label('Email Verified At')
+                    ->required()
+                    ->placeholder('Email Verified At'),
                 // password field
                 Forms\Components\TextInput::make('password')
                     ->label('Password')
@@ -40,7 +45,6 @@ class UserResource extends Resource
                     ->required()
                     ->placeholder('********')
                     ->autocomplete('new-password')
-                    ->helpMessage('Password must be at least 8 characters long.')
                     ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                     ->dehydrated(fn ($state) => filled($state))
             ]);
@@ -54,6 +58,9 @@ class UserResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('email_verified_at')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

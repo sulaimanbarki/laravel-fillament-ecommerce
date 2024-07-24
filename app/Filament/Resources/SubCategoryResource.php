@@ -27,15 +27,17 @@ class SubCategoryResource extends Resource
                     ->label('Name')
                     ->required()
                     ->placeholder('Sub category name'),
-                Forms\Components\Textarea::make('description')
-                    ->label('Description')
-                    ->placeholder('Sub category description'),
                 Forms\Components\Select::make('category_id')
                     ->label('Category')
                     ->options(
                         \App\Models\Category::all()->pluck('name', 'id')->toArray()
                     )
                     ->required(),
+
+                Forms\Components\Textarea::make('description')
+                    ->label('Description')
+                    ->placeholder('Sub category description'),
+                    
                 // is_active field checkbox
                 Forms\Components\Checkbox::make('is_active')
                     ->label('Active')

@@ -28,12 +28,20 @@ class ProductResource extends Resource
                     ->options(
                         \App\Models\Category::all()->pluck('name', 'id')->toArray()
                     )
-                    ->required(),
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        $set('sub_category_id', null);
+                    }),
                 Forms\Components\Select::make('sub_category_id')
                     ->label('Sub Category')
-                    ->options(
-                        \App\Models\SubCategory::all()->pluck('name', 'id')->toArray()
-                    )
+                    ->options(function (callable $get) {
+                        $categoryId = $get('category_id');
+                        if ($categoryId) {
+                            return \App\Models\SubCategory::where('category_id', $categoryId)->pluck('name', 'id')->toArray();
+                        }
+                        return [];
+                    })
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->label('Name')
@@ -80,11 +88,6 @@ class ProductResource extends Resource
                     ->label('Active'),
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Image')
-                    // attach the base url to the image
-                    // ->image(function ($value) {
-                    //     return $value ? asset('storage/' . $value) : null;
-                    // }),
-                    // ->getImageUrl()
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
